@@ -1,0 +1,22 @@
+﻿<svg width='512' height='512' xmlns='http://www.w3.org/2000/svg'>
+  <defs>
+    <linearGradient id='grad2' x1='0%' y1='0%' x2='100%' y2='100%'>
+      <stop offset='0%' style='stop-color:#447582;stop-opacity:1' />
+      <stop offset='100%' style='stop-color:#0D3E38;stop-opacity:1' />
+    </linearGradient>
+  </defs>
+  <rect width='512' height='512' rx='85' fill='url(#grad2)'/>
+  <!-- QR Code Pattern -->
+  <rect x='100' y='100' width='80' height='80' rx='12' fill='#B8E3E0'/>
+  <rect x='100' y='332' width='80' height='80' rx='12' fill='#B8E3E0'/>
+  <rect x='332' y='100' width='80' height='80' rx='12' fill='#B8E3E0'/>
+  <!-- Center V shape -->
+  <path d='M 200 200 L 256 300 L 312 200' stroke='#B8E3E0' stroke-width='20' stroke-linecap='round' stroke-linejoin='round' fill='none'/>
+  <!-- Dots -->
+  <circle cx='256' cy='372' r='20' fill='#93B1B5'/>
+  <circle cx='372' cy='256' r='20' fill='#93B1B5'/>
+  <circle cx='140' cy='256' r='20' fill='#93B1B5'/>
+  <!-- Small decorative elements -->
+  <rect x='220' y='340' width='30' height='30' rx='6' fill='#93B1B5' opacity='0.6'/>
+  <rect x='262' y='340' width='30' height='30' rx='6' fill='#93B1B5' opacity='0.6'/>
+</svg>

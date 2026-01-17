@@ -1,0 +1,259 @@
+.attendance-report {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.export-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-export {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: white;
+}
+
+.btn-export.excel {
+  background: #10b981;
+}
+
+.btn-export.excel:hover {
+  background: #059669;
+}
+
+.btn-export.pdf {
+  background: #ef4444;
+}
+
+.btn-export.pdf:hover {
+  background: #dc2626;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: #fdfdfb;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid;
+}
+
+.stat-card.total {
+  border-left-color: #6b7280;
+}
+
+.stat-card.present {
+  border-left-color: #22c55e;
+}
+
+.stat-card.absent {
+  border-left-color: #ef4444;
+}
+
+.stat-card.rate {
+  border-left-color: #447582;
+}
+
+.stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 0.5rem;
+  flex-shrink: 0;
+}
+
+.stat-card.total .stat-icon {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.stat-card.present .stat-icon {
+  background: #f0fdf4;
+  color: #22c55e;
+}
+
+.stat-card.absent .stat-icon {
+  background: #fef2f2;
+  color: #ef4444;
+}
+
+.stat-card.rate .stat-icon {
+  background: #B8E3E0;
+  color: #447582;
+}
+
+.stat-info {
+  flex: 1;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.2;
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  background: #fdfdfb;
+  padding: 0.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.filter-tab {
+  flex: 1;
+  padding: 0.625rem 1rem;
+  background: transparent;
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+}
+
+.filter-tab:hover {
+  background: #f3f4f6;
+}
+
+.filter-tab.active {
+  background: #447582;
+  color: white;
+}
+
+.participants-list {
+  background: #fdfdfb;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.participant-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #f3f4f6;
+  transition: background 0.2s;
+}
+
+.participant-row:last-child {
+  border-bottom: none;
+}
+
+.participant-row:hover {
+  background: #f9fafb;
+}
+
+.participant-basic {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+}
+
+.status-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-badge.present {
+  background: #f0fdf4;
+  color: #22c55e;
+}
+
+.status-badge.absent {
+  background: #fef2f2;
+  color: #ef4444;
+}
+
+.participant-details {
+  flex: 1;
+}
+
+.participant-name {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.participant-team-id {
+  font-size: 0.8125rem;
+  color: #6b7280;
+  margin-top: 0.125rem;
+}
+
+.participant-time {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.participant-time svg {
+  flex-shrink: 0;
+}
+
+.not-marked {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+.empty-filter {
+  padding: 3rem 1.5rem;
+  text-align: center;
+  color: #6b7280;
+}
+
+@media (max-width: 640px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .filter-tabs {
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+  
+  .participant-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .participant-time {
+    padding-left: 3rem;
+  }
+}

@@ -1,0 +1,19 @@
+﻿<svg width='192' height='192' xmlns='http://www.w3.org/2000/svg'>
+  <defs>
+    <linearGradient id='grad1' x1='0%' y1='0%' x2='100%' y2='100%'>
+      <stop offset='0%' style='stop-color:#447582;stop-opacity:1' />
+      <stop offset='100%' style='stop-color:#0D3E38;stop-opacity:1' />
+    </linearGradient>
+  </defs>
+  <rect width='192' height='192' rx='32' fill='url(#grad1)'/>
+  <!-- QR Code Pattern -->
+  <rect x='40' y='40' width='30' height='30' rx='4' fill='#B8E3E0'/>
+  <rect x='40' y='122' width='30' height='30' rx='4' fill='#B8E3E0'/>
+  <rect x='122' y='40' width='30' height='30' rx='4' fill='#B8E3E0'/>
+  <!-- Center V shape -->
+  <path d='M 80 80 L 96 110 L 112 80' stroke='#B8E3E0' stroke-width='8' stroke-linecap='round' stroke-linejoin='round' fill='none'/>
+  <!-- Dots -->
+  <circle cx='96' cy='136' r='8' fill='#93B1B5'/>
+  <circle cx='136' cy='96' r='8' fill='#93B1B5'/>
+  <circle cx='56' cy='96' r='8' fill='#93B1B5'/>
+</svg>
