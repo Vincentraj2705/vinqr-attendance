@@ -20,16 +20,25 @@ function ManageParticipants() {
   useEffect(() => {
     loadParticipants();
     
-    // Add scroll listener to show button when scrolling
+    // Add scroll listener to show/hide button based on scroll position
     const handleScroll = () => {
-      if (window.scrollY > 300) {
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      
+      // Show button if user has scrolled up from bottom (more than 300px from bottom)
+      const distanceFromBottom = documentHeight - (scrollTop + windowHeight);
+      
+      if (distanceFromBottom > 300 && participants.length > 0) {
         setShowScrollDown(true);
+      } else {
+        setShowScrollDown(false);
       }
     };
     
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [participants]);
 
   const loadParticipants = () => {
     const data = getParticipants();
@@ -416,7 +425,6 @@ function ManageParticipants() {
 
   const scrollToBottom = () => {
     participantsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    setTimeout(() => setShowScrollDown(false), 1000);
   };
 
   return (
