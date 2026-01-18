@@ -606,7 +606,6 @@ function ManageParticipants() {
       {showScrollDown && (
         <button className="scroll-to-bottom-btn" onClick={scrollToBottom}>
           <ArrowDown size={24} />
-          <span>Scroll to Bottom</span>
         </button>
       )}
     </div>
