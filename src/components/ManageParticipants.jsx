@@ -200,7 +200,7 @@ function ManageParticipants() {
         });
 
         loadParticipants();
-        setShowScrollDown(true);
+        setShowScrollUp(true);
         alert(`Import complete!\nAdded: ${successCount} participants\nSkipped: ${errorCount} rows\n\nImported columns: ${headers.join(', ')}`);
       } catch (error) {
         alert('Error reading Excel file. Please ensure it has a header row with column names.');
@@ -425,13 +425,6 @@ function ManageParticipants() {
 
   return (
     <div className="manage-participants">
-      {showScrollDown && (
-        <button className="scroll-to-bottom-btn" onClick={scrollToBottom}>
-          <ArrowDown size={20} />
-          <span>Scroll to View All</span>
-        </button>
-      )}
-      
       <div className="section-header">
         <h2>Participants ({participants.length})</h2>
         <div className="header-actions">
