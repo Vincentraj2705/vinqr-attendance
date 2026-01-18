@@ -102,10 +102,9 @@ function ManageParticipants() {
 
   const downloadQR = async (participant) => {
     try {
-      // Complex QR with full participant data for uniqueness
+      // QR with full participant data - no timestamp for consistency
       const qrData = JSON.stringify({
         id: participant.id,
-        timestamp: Date.now(),
         ...participant
       });
       
@@ -271,10 +270,9 @@ function ManageParticipants() {
 
   const handleShare = async (participant) => {
     try {
-      // Generate QR code as blob for sharing
+      // Generate QR code as blob for sharing - no timestamp for consistency
       const qrData = JSON.stringify({
         id: participant.id,
-        timestamp: Date.now(),
         ...participant
       });
       
@@ -621,10 +619,9 @@ function ParticipantCard({ participant, isShared, onDownloadQR, onShare, onToggl
 
   const generateQR = async () => {
     try {
-      // Complex QR with full participant data for uniqueness
+      // QR with full participant data - no timestamp to prevent regeneration
       const qrData = JSON.stringify({
         id: participant.id,
-        timestamp: Date.now(),
         ...participant
       });
       const url = await QRCode.toDataURL(qrData, {
