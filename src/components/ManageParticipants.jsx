@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Plus, Download, UserPlus, Trash2, Edit2, X, Upload, Share2, CheckCircle, Search, ArrowDown } from 'lucide-react';
+import { Plus, Download, UserPlus, Trash2, Edit2, X, Upload, Share2, CheckCircle, Search, ArrowUp } from 'lucide-react';
 import QRCode from 'qrcode';
 import * as XLSX from 'xlsx';
 import { getParticipants, addParticipant, deleteParticipant, updateParticipant, getEventOrganiser } from '../storage';
@@ -14,7 +14,7 @@ function ManageParticipants() {
   const [isDragging, setIsDragging] = useState(false);
   const [sharedParticipants, setSharedParticipants] = useState(new Set());
   const [searchQuery, setSearchQuery] = useState('');
-  const [showScrollDown, setShowScrollDown] = useState(false);
+  const [showScrollUp, setShowScrollUp] = useState(false);
   const participantsEndRef = useRef(null);
 
   useEffect(() => {
@@ -22,17 +22,13 @@ function ManageParticipants() {
     
     // Add scroll listener to show/hide button based on scroll position
     const handleScroll = () => {
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
       
-      // Show button if user has scrolled up from bottom (more than 300px from bottom)
-      const distanceFromBottom = documentHeight - (scrollTop + windowHeight);
-      
-      if (distanceFromBottom > 300 && participants.length > 0) {
-        setShowScrollDown(true);
+      // Show button if user has scrolled down more than 300px from top
+      if (scrollTop > 300 && participants.length > 0) {
+        setShowScrollUp(true);
       } else {
-        setShowScrollDown(false);
+        setShowScrollUp(false);
       }
     };
     
@@ -421,8 +417,8 @@ function ManageParticipants() {
     }
   };
 
-  const scrollToBottom = () => {
-    participantsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -601,9 +597,9 @@ function ManageParticipants() {
         </div>
       )}
 
-      {showScrollDown && (
-        <button className="scroll-to-bottom-btn" onClick={scrollToBottom}>
-          <ArrowDown size={24} />
+      {showScrollUp && (
+        <button className="scroll-to-bottom-btn" onClick={scrollToTop}>
+          <ArrowUp size={24} />
         </button>
       )}
     </div>

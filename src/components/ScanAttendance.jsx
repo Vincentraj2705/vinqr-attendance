@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Html5Qrcode } from 'html5-qrcode';
-import { Camera, CheckCircle, XCircle, AlertCircle, Home, ScanLine, UserPlus, Search, ArrowDown } from 'lucide-react';
+import { Camera, CheckCircle, XCircle, AlertCircle, Home, ScanLine, UserPlus, Search, ArrowUp } from 'lucide-react';
 import { getParticipants, markAttendance, getAttendance } from '../storage';
 import './ScanAttendance.css';
 
@@ -12,7 +12,7 @@ function ScanAttendance() {
   const [searchQuery, setSearchQuery] = useState('');
   const [participants, setParticipants] = useState([]);
   const [attendance, setAttendance] = useState([]);
-  const [showScrollDown, setShowScrollDown] = useState(false);
+  const [showScrollUp, setShowScrollUp] = useState(false);
   const scannerRef = useRef(null);
   const html5QrCodeRef = useRef(null);
   const participantsEndRef = useRef(null);
@@ -26,17 +26,13 @@ function ScanAttendance() {
     
     // Add scroll listener to show/hide button based on scroll position
     const handleScroll = () => {
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
       
-      // Show button if user has scrolled up from bottom (more than 300px from bottom)
-      const distanceFromBottom = documentHeight - (scrollTop + windowHeight);
-      
-      if (distanceFromBottom > 300 && participants.length > 0) {
-        setShowScrollDown(true);
+      // Show button if user has scrolled down more than 300px from top
+      if (scrollTop > 300 && participants.length > 0) {
+        setShowScrollUp(true);
       } else {
-        setShowScrollDown(false);
+        setShowScrollUp(false);
       }
     };
     
@@ -103,8 +99,8 @@ function ScanAttendance() {
     });
   };
 
-  const scrollToBottom = () => {
-    participantsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const switchMode = (newMode) => {
@@ -452,9 +448,9 @@ function ScanAttendance() {
         </>
       )}
 
-      {showScrollDown && (
-        <button className="scroll-to-bottom-btn" onClick={scrollToBottom}>
-          <ArrowDown size={24} />
+      {showScrollUp && (
+        <button className="scroll-to-bottom-btn" onClick={scrollToTop}>
+          <ArrowUp size={24} />
         </button>
       )}
     </div>
