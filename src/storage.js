@@ -283,3 +283,54 @@ export const deleteEventFromHistory = (eventId) => {
     return false;
   }
 };
+
+// Export participants as JSON (preserves IDs for cross-device compatibility)
+export const exportParticipantsJSON = () => {
+  try {
+    const participants = getParticipants();
+    const eventName = getEventName();
+    const eventDate = getEventDate();
+    
+    const exportData = {
+      exportDate: new Date().toISOString(),
+      eventName: eventName,
+      eventDate: eventDate,
+      participantCount: participants.length,
+      participants: participants
+    };
+    
+    return exportData;
+  } catch (error) {
+    console.error('Error exporting participants:', error);
+    return null;
+  }
+};
+
+// Import participants from JSON (preserves original IDs)
+export const importParticipantsJSON = (jsonData) => {
+  try {
+    if (!jsonData || !jsonData.participants || !Array.isArray(jsonData.participants)) {
+      return { success: false, message: 'Invalid JSON format' };
+    }
+    
+    const participants = jsonData.participants;
+    
+    if (participants.length === 0) {
+      return { success: false, message: 'No participants found in file' };
+    }
+    
+    // Save participants with their original IDs
+    saveParticipants(participants);
+    
+    window.dispatchEvent(new Event('dataChanged'));
+    
+    return { 
+      success: true, 
+      count: participants.length,
+      eventName: jsonData.eventName || 'Imported Event'
+    };
+  } catch (error) {
+    console.error('Error importing participants:', error);
+    return { success: false, message: 'Error processing file' };
+  }
+};

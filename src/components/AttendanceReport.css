@@ -1,6 +1,7 @@
 .attendance-report {
   max-width: 1000px;
   margin: 0 auto;
+  padding-bottom: 5rem;
 }
 
 .export-buttons {

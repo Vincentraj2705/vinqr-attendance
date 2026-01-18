@@ -1,5 +1,69 @@
 .manage-participants {
   max-width: 1200px;
+  position: relative;
+  padding-bottom: 5rem;
+}
+
+.scroll-to-bottom-btn {
+  position: fixed;
+  bottom: 6rem;
+  right: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(135deg, #447582 0%, #0D3E38 100%);
+  color: white;
+  border: none;
+  border-radius: 3rem;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  box-shadow: 0 8px 24px rgba(68, 117, 130, 0.4);
+  cursor: pointer;
+  z-index: 999;
+  animation: bounce 2s ease-in-out infinite;
+  transition: all 0.3s;
+}
+
+.scroll-to-bottom-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(68, 117, 130, 0.5);
+}
+
+.scroll-to-bottom-btn:active {
+  transform: translateY(-2px);
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+@media (max-width: 768px) {
+  .scroll-to-bottom-btn {
+    bottom: 5.5rem;
+    right: 1rem;
+    padding: 0.875rem 1.25rem;
+    font-size: 0.875rem;
+  }
+
+  .scroll-to-bottom-btn span {
+    display: none;
+  }
+
+  .scroll-to-bottom-btn {
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    padding: 0;
+  }
 }
 
 .section-header {

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Plus, Download, UserPlus, Trash2, Edit2, X, Upload, Share2, CheckCircle, Search } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Plus, Download, UserPlus, Trash2, Edit2, X, Upload, Share2, CheckCircle, Search, ArrowDown } from 'lucide-react';
 import QRCode from 'qrcode';
 import * as XLSX from 'xlsx';
 import { getParticipants, addParticipant, deleteParticipant, updateParticipant, getEventOrganiser } from '../storage';
@@ -14,6 +14,8 @@ function ManageParticipants() {
   const [isDragging, setIsDragging] = useState(false);
   const [sharedParticipants, setSharedParticipants] = useState(new Set());
   const [searchQuery, setSearchQuery] = useState('');
+  const [showScrollDown, setShowScrollDown] = useState(false);
+  const participantsEndRef = useRef(null);
 
   useEffect(() => {
     loadParticipants();
@@ -174,6 +176,7 @@ function ManageParticipants() {
         });
 
         loadParticipants();
+        setShowScrollDown(true);
         alert(`Import complete!\nAdded: ${successCount} participants\nSkipped: ${errorCount} rows\n\nImported columns: ${headers.join(', ')}`);
       } catch (error) {
         alert('Error reading Excel file. Please ensure it has a header row with column names.');
@@ -398,8 +401,20 @@ function ManageParticipants() {
     }
   };
 
+  const scrollToBottom = () => {
+    participantsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => setShowScrollDown(false), 1000);
+  };
+
   return (
     <div className="manage-participants">
+      {showScrollDown && (
+        <button className="scroll-to-bottom-btn" onClick={scrollToBottom}>
+          <ArrowDown size={20} />
+          <span>Scroll to View All</span>
+        </button>
+      )}
+      
       <div className="section-header">
         <h2>Participants ({participants.length})</h2>
         <div className="header-actions">
@@ -563,6 +578,7 @@ function ManageParticipants() {
               />
             ))
           )}
+          <div ref={participantsEndRef} />
         </div>
       )}
     </div>

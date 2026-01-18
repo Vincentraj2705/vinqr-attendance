@@ -17,6 +17,33 @@
   margin: 0;
 }
 
+.header-actions-settings {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-tutorial {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-tutorial:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+}
+
 .btn-new-event {
   display: flex;
   align-items: center;
@@ -141,6 +168,31 @@
 .setting-input:focus {
   border-color: #2563eb;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.date-input-wrapper {
+  position: relative;
+}
+
+.date-input-label {
+  display: block;
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 500;
+  margin-bottom: 0.375rem;
+}
+
+.date-input {
+  width: 100%;
+}
+
+.date-input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.date-input::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
 }
 
 .btn-warning {
@@ -298,6 +350,7 @@
 /* Developer Section */
 .developer-section {
   margin-top: 2rem;
+  margin-bottom: 3rem;
   padding: 1.5rem;
   background: #fdfdfb;
   border: 1px solid #e8e8e0;
@@ -313,6 +366,14 @@
   font-size: 0.875rem;
   text-align: center;
   line-height: 1.5;
+}
+
+.developer-details {
+  color: #447582;
+  font-size: 0.8125rem;
+  text-align: center;
+  margin: 0;
+  font-weight: 500;
 }
 
 .developer-link {
@@ -494,5 +555,122 @@
   .history-actions {
     width: 100%;
     justify-content: flex-end;
+  }
+}
+
+/* JSON Backup Section */
+.json-backup-card {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border: 2px solid #bae6fd;
+}
+
+.json-backup-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.btn-json-export,
+.btn-json-import {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-json-export {
+  background: linear-gradient(135deg, #447582 0%, #0D3E38 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(68, 117, 130, 0.3);
+}
+
+.btn-json-export:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(68, 117, 130, 0.4);
+}
+
+.btn-json-export:active {
+  transform: translateY(0);
+}
+
+.btn-json-import {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.btn-json-import:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+}
+
+.btn-json-import:active {
+  transform: translateY(0);
+}
+
+.btn-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.btn-title {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.btn-subtitle {
+  font-size: 0.75rem;
+  opacity: 0.9;
+  font-weight: 400;
+}
+
+.json-info-box {
+  background: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border-left: 4px solid #3b82f6;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.json-info-box strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #1e40af;
+  font-size: 0.9375rem;
+}
+
+.json-info-box ul {
+  margin: 0.5rem 0 0 0;
+  padding-left: 1.25rem;
+}
+
+.json-info-box li {
+  margin-bottom: 0.375rem;
+  color: #4b5563;
+}
+
+@media (max-width: 640px) {
+  .btn-json-export,
+  .btn-json-import {
+    padding: 0.875rem 1rem;
+  }
+  
+  .btn-title {
+    font-size: 0.9375rem;
+  }
+  
+  .btn-subtitle {
+    font-size: 0.6875rem;
   }
 }

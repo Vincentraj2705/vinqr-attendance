@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Trash2, Download, Upload, AlertTriangle, Mail, MapPin, History, RotateCcw, Archive, Moon, Sun } from 'lucide-react';
+import { Calendar, Trash2, Download, Upload, AlertTriangle, Mail, MapPin, History, RotateCcw, Archive, Moon, Sun, Database, FileJson, BookOpen } from 'lucide-react';
 import { 
   getEventName, 
   setEventName,
@@ -16,8 +16,11 @@ import {
   getEventHistory,
   saveCurrentEventToHistory,
   loadEventFromHistory,
-  deleteEventFromHistory
+  deleteEventFromHistory,
+  exportParticipantsJSON,
+  importParticipantsJSON
 } from '../storage';
+import TutorialGuide from './TutorialGuide';
 import './EventSettings.css';
 
 function EventSettings() {
@@ -31,6 +34,7 @@ function EventSettings() {
   const [newEventName, setNewEventName] = useState('');
   const [showContact, setShowContact] = useState(false);
   const [eventHistory, setEventHistory] = useState([]);
+  const [showTutorial, setShowTutorial] = useState(false);
 
   useEffect(() => {
     setEventNameState(getEventName());
@@ -159,17 +163,69 @@ function EventSettings() {
     e.target.value = '';
   };
 
+  const handleExportParticipantsJSON = () => {
+    const data = exportParticipantsJSON();
+    if (!data) {
+      alert('No participants to export');
+      return;
+    }
+    
+    const json = JSON.stringify(data, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `participants_backup_${new Date().toISOString().split('T')[0]}.json`;
+    link.click();
+    window.URL.revokeObjectURL(url);
+    alert('Participants exported! Share this file to use the same QR codes on other devices.');
+  };
+
+  const handleImportParticipantsJSON = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const data = JSON.parse(event.target.result);
+        const result = importParticipantsJSON(data);
+        
+        if (result.success) {
+          alert(`Successfully imported ${result.count} participants!\n\nQR codes from the source device will now work on this device.`);
+          loadHistory();
+        } else {
+          alert(`Import failed: ${result.message}`);
+        }
+      } catch (error) {
+        alert('Invalid JSON file format');
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  };
+
   return (
     <div className="event-settings">
       <div className="section-header">
         <h2>Settings</h2>
-        <button 
-          className="btn-new-event"
-          onClick={() => setShowNewEventConfirm(true)}
-          title="Start New Event"
-        >
-          + New Event
-        </button>
+        <div className="header-actions-settings">
+          <button 
+            className="btn-tutorial"
+            onClick={() => setShowTutorial(true)}
+            title="Tutorial Guide"
+          >
+            <BookOpen size={18} />
+            Tutorial
+          </button>
+          <button 
+            className="btn-new-event"
+            onClick={() => setShowNewEventConfirm(true)}
+            title="Start New Event"
+          >
+            + New Event
+          </button>
+        </div>
       </div>
 
       <div className="settings-section">
@@ -189,12 +245,18 @@ function EventSettings() {
               placeholder="Event Name (e.g., Team Meeting Jan 2026)"
               className="setting-input"
             />
-            <input
-              type="date"
-              value={eventDate}
-              onChange={(e) => setEventDateState(e.target.value)}
-              className="setting-input"
-            />
+            <div className="date-input-wrapper">
+              <label htmlFor="event-date-input" className="date-input-label">
+                Event Date
+              </label>
+              <input
+                id="event-date-input"
+                type="date"
+                value={eventDate}
+                onChange={(e) => setEventDateState(e.target.value)}
+                className="setting-input date-input"
+              />
+            </div>
             <input
               type="text"
               value={eventOrganiser}
@@ -451,6 +513,47 @@ function EventSettings() {
         </div>
       </div>
 
+      {/* JSON Backup/Restore Section */}
+      <div className="settings-section" style={{ marginTop: '1.5rem' }}>
+        <div className="setting-card json-backup-card">
+          <div className="setting-header">
+            <Database size={20} />
+            <h3>Cross-Device Backup</h3>
+          </div>
+          <p className="setting-description">
+            Export participants as JSON to use the same QR codes across multiple devices. Import the JSON file on another phone to ensure QR codes work seamlessly!
+          </p>
+          
+          <div className="json-backup-actions">
+            <button 
+              className="btn-json-export" 
+              onClick={handleExportParticipantsJSON}
+            >
+              <FileJson size={18} />
+              <div className="btn-text">
+                <span className="btn-title">Export Participants</span>
+                <span className="btn-subtitle">Save with IDs for other devices</span>
+              </div>
+            </button>
+            
+            <label className="btn-json-import" htmlFor="json-import-input">
+              <Upload size={18} />
+              <div className="btn-text">
+                <span className="btn-title">Import Participants</span>
+                <span className="btn-subtitle">Load from another device</span>
+              </div>
+            </label>
+            <input
+              type="file"
+              id="json-import-input"
+              accept=".json"
+              onChange={handleImportParticipantsJSON}
+              style={{ display: 'none' }}
+            />
+          </div>
+        </div>
+      </div>
+
       <div className="app-info">
         <h4>About This App</h4>
         <p>
@@ -473,6 +576,9 @@ function EventSettings() {
             VINCENT RAJ R
           </a>
         </div>
+        <p className="developer-details">
+          ECE Student | Kings Engineering College
+        </p>
         <button 
           className="contact-developer-btn"
           onClick={() => setShowContact(!showContact)}
@@ -489,6 +595,8 @@ function EventSettings() {
           </div>
         )}
       </div>
+
+      {showTutorial && <TutorialGuide onClose={() => setShowTutorial(false)} />}
     </div>
   );
 }
