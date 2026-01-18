@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Plus, Download, UserPlus, Trash2, Edit2, X, Upload, Share2, CheckCircle, Search, ArrowUp } from 'lucide-react';
+import { Plus, Download, UserPlus, Trash2, Edit2, X, Upload, Share2, CheckCircle, Search } from 'lucide-react';
 import QRCode from 'qrcode';
 import * as XLSX from 'xlsx';
 import { getParticipants, addParticipant, deleteParticipant, updateParticipant, getEventOrganiser } from '../storage';
@@ -14,29 +14,11 @@ function ManageParticipants() {
   const [isDragging, setIsDragging] = useState(false);
   const [sharedParticipants, setSharedParticipants] = useState(new Set());
   const [searchQuery, setSearchQuery] = useState('');
-  const [showScrollUp, setShowScrollUp] = useState(false);
   const participantsEndRef = useRef(null);
 
   useEffect(() => {
     loadParticipants();
   }, []);
-
-  useEffect(() => {
-    // Add scroll listener to show/hide button based on scroll position
-    const handleScroll = () => {
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      
-      // Show button if user has scrolled down more than 300px from top
-      if (scrollTop > 300 && participants.length > 0) {
-        setShowScrollUp(true);
-      } else {
-        setShowScrollUp(false);
-      }
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [participants]);
 
   const loadParticipants = () => {
     const data = getParticipants();
@@ -200,7 +182,6 @@ function ManageParticipants() {
         });
 
         loadParticipants();
-        setShowScrollUp(true);
         alert(`Import complete!\nAdded: ${successCount} participants\nSkipped: ${errorCount} rows\n\nImported columns: ${headers.join(', ')}`);
       } catch (error) {
         alert('Error reading Excel file. Please ensure it has a header row with column names.');
@@ -419,10 +400,6 @@ function ManageParticipants() {
     }
   };
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   return (
     <div className="manage-participants">
       <div className="section-header">
@@ -590,12 +567,6 @@ function ManageParticipants() {
           )}
           <div ref={participantsEndRef} />
         </div>
-      )}
-
-      {showScrollUp && (
-        <button className="scroll-to-bottom-btn" onClick={scrollToTop}>
-          <ArrowUp size={24} />
-        </button>
       )}
     </div>
   );

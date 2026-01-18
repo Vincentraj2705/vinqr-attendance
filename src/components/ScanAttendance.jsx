@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Html5Qrcode } from 'html5-qrcode';
-import { Camera, CheckCircle, XCircle, AlertCircle, Home, ScanLine, UserPlus, Search, ArrowUp } from 'lucide-react';
+import { Camera, CheckCircle, XCircle, AlertCircle, Home, ScanLine, UserPlus, Search } from 'lucide-react';
 import { getParticipants, markAttendance, getAttendance } from '../storage';
 import './ScanAttendance.css';
 
@@ -12,7 +12,6 @@ function ScanAttendance() {
   const [searchQuery, setSearchQuery] = useState('');
   const [participants, setParticipants] = useState([]);
   const [attendance, setAttendance] = useState([]);
-  const [showScrollUp, setShowScrollUp] = useState(false);
   const scannerRef = useRef(null);
   const html5QrCodeRef = useRef(null);
   const participantsEndRef = useRef(null);
@@ -31,26 +30,6 @@ function ScanAttendance() {
       window.removeEventListener('dataChanged', handleDataChange);
     };
   }, []);
-
-  useEffect(() => {
-    // Add scroll listener to show/hide button based on scroll position
-    const handleScroll = () => {
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      
-      // Show button if user has scrolled down more than 300px from top
-      if (scrollTop > 300 && participants.length > 0) {
-        setShowScrollUp(true);
-      } else {
-        setShowScrollUp(false);
-      }
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [participants]);
 
   const loadData = () => {
     setParticipants(getParticipants());
@@ -103,10 +82,6 @@ function ScanAttendance() {
           String(value).toLowerCase().includes(query)
         );
     });
-  };
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const switchMode = (newMode) => {
@@ -452,12 +427,6 @@ function ScanAttendance() {
             <p>Use this mode to manually mark attendance if camera is not available.</p>
           </div>
         </>
-      )}
-
-      {showScrollUp && (
-        <button className="scroll-to-bottom-btn" onClick={scrollToTop}>
-          <ArrowUp size={24} />
-        </button>
       )}
     </div>
   );
