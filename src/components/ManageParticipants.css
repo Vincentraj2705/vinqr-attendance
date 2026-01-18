@@ -10,6 +10,7 @@
   right: 2rem;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   padding: 1rem 1.5rem;
   background: linear-gradient(135deg, #447582 0%, #0D3E38 100%);
@@ -47,22 +48,20 @@
 }
 
 @media (max-width: 768px) {
-  .scroll-to-bottom-btn {
-    bottom: 5.5rem;
-    right: 1rem;
-    padding: 0.875rem 1.25rem;
-    font-size: 0.875rem;
-  }
-
   .scroll-to-bottom-btn span {
     display: none;
   }
 
   .scroll-to-bottom-btn {
+    bottom: 5.5rem;
+    right: 1rem;
     border-radius: 50%;
     width: 56px;
     height: 56px;
     padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 

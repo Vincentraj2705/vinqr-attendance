@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Html5Qrcode } from 'html5-qrcode';
-import { Camera, CheckCircle, XCircle, AlertCircle, Home, ScanLine, UserPlus, Search } from 'lucide-react';
+import { Camera, CheckCircle, XCircle, AlertCircle, Home, ScanLine, UserPlus, Search, ArrowDown } from 'lucide-react';
 import { getParticipants, markAttendance, getAttendance } from '../storage';
 import './ScanAttendance.css';
 
@@ -12,8 +12,10 @@ function ScanAttendance() {
   const [searchQuery, setSearchQuery] = useState('');
   const [participants, setParticipants] = useState([]);
   const [attendance, setAttendance] = useState([]);
+  const [showScrollDown, setShowScrollDown] = useState(false);
   const scannerRef = useRef(null);
   const html5QrCodeRef = useRef(null);
+  const participantsEndRef = useRef(null);
 
   useEffect(() => {
     loadData();
@@ -22,11 +24,20 @@ function ScanAttendance() {
       loadData();
     };
     
+    // Add scroll listener to show button when scrolling
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        setShowScrollDown(true);
+      }
+    };
+    
     window.addEventListener('dataChanged', handleDataChange);
+    window.addEventListener('scroll', handleScroll);
     
     return () => {
       stopScanning();
       window.removeEventListener('dataChanged', handleDataChange);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
@@ -45,7 +56,7 @@ function ScanAttendance() {
     if (result.success) {
       setScanResult({
         success: true,
-        message: 'Attendance marked successfully!',
+        message: '✓ Attendance Marked',
         participant: participant
       });
       playSound(true);
@@ -81,6 +92,11 @@ function ScanAttendance() {
           String(value).toLowerCase().includes(query)
         );
     });
+  };
+
+  const scrollToBottom = () => {
+    participantsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    setShowScrollDown(false);
   };
 
   const switchMode = (newMode) => {
@@ -168,21 +184,28 @@ function ScanAttendance() {
       if (result.success) {
         setScanResult({
           success: true,
-          message: 'Attendance marked successfully!',
+          message: '✓ Attendance Marked',
           participant: participant
         });
-        
-        // Play success sound
         playSound(true);
+        loadData();
+        
+        // Keep popup visible for 2 seconds
+        setTimeout(() => {
+          setScanResult(null);
+        }, 2000);
       } else {
         setScanResult({
           success: false,
-          message: result.message,
+          message: 'Already Updated',
           participant: participant
         });
-        
-        // Play error sound
         playSound(false);
+        
+        // Keep popup visible for 2 seconds
+        setTimeout(() => {
+          setScanResult(null);
+        }, 2000);
       }
     } catch (err) {
       setScanResult({
@@ -410,6 +433,7 @@ function ScanAttendance() {
                   );
                 })
               )}
+              <div ref={participantsEndRef} />
             </div>
           </div>
 
@@ -418,6 +442,13 @@ function ScanAttendance() {
             <p>Use this mode to manually mark attendance if camera is not available.</p>
           </div>
         </>
+      )}
+
+      {showScrollDown && (
+        <button className="scroll-to-bottom-btn" onClick={scrollToBottom}>
+          <ArrowDown size={24} />
+          <span>Scroll to Bottom</span>
+        </button>
       )}
     </div>
   );

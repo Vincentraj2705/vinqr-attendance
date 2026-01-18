@@ -19,6 +19,16 @@ function ManageParticipants() {
 
   useEffect(() => {
     loadParticipants();
+    
+    // Add scroll listener to show button when scrolling
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        setShowScrollDown(true);
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const loadParticipants = () => {
@@ -109,8 +119,16 @@ function ManageParticipants() {
       const link = document.createElement('a');
       link.download = `QR_${fileName}.png`;
       link.href = canvas.toDataURL();
+      document.body.appendChild(link);
       link.click();
+      document.body.removeChild(link);
+      
+      // Revoke the object URL to free memory
+      setTimeout(() => {
+        URL.revokeObjectURL(link.href);
+      }, 100);
     } catch (error) {
+      console.error('Error generating QR code:', error);
       alert('Error generating QR code');
     }
   };
@@ -231,18 +249,13 @@ function ManageParticipants() {
   };
 
   const toggleShared = (participantId) => {
-    console.log('Toggling shared for ID:', participantId); // Debug log
     setSharedParticipants(prev => {
-      const newSet = new Set([...prev]); // Create new Set from array to ensure immutability
-      console.log('Current shared IDs:', [...prev]); // Debug log
+      const newSet = new Set([...prev]);
       if (newSet.has(participantId)) {
         newSet.delete(participantId);
-        console.log('Removed ID:', participantId); // Debug log
       } else {
         newSet.add(participantId);
-        console.log('Added ID:', participantId); // Debug log
       }
-      console.log('New shared IDs:', [...newSet]); // Debug log
       return newSet;
     });
   };
@@ -580,6 +593,13 @@ function ManageParticipants() {
           )}
           <div ref={participantsEndRef} />
         </div>
+      )}
+
+      {showScrollDown && (
+        <button className="scroll-to-bottom-btn" onClick={scrollToBottom}>
+          <ArrowDown size={24} />
+          <span>Scroll to Bottom</span>
+        </button>
       )}
     </div>
   );
