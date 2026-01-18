@@ -19,7 +19,9 @@ function ManageParticipants() {
 
   useEffect(() => {
     loadParticipants();
-    
+  }, []);
+
+  useEffect(() => {
     // Add scroll listener to show/hide button based on scroll position
     const handleScroll = () => {
       const scrollTop = window.scrollY || document.documentElement.scrollTop;

@@ -24,6 +24,15 @@ function ScanAttendance() {
       loadData();
     };
     
+    window.addEventListener('dataChanged', handleDataChange);
+    
+    return () => {
+      stopScanning();
+      window.removeEventListener('dataChanged', handleDataChange);
+    };
+  }, []);
+
+  useEffect(() => {
     // Add scroll listener to show/hide button based on scroll position
     const handleScroll = () => {
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
@@ -36,12 +45,9 @@ function ScanAttendance() {
       }
     };
     
-    window.addEventListener('dataChanged', handleDataChange);
     window.addEventListener('scroll', handleScroll);
     
     return () => {
-      stopScanning();
-      window.removeEventListener('dataChanged', handleDataChange);
       window.removeEventListener('scroll', handleScroll);
     };
   }, [participants]);
