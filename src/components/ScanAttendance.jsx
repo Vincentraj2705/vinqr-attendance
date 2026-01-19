@@ -169,16 +169,12 @@ function ScanAttendance() {
       if (result.success) {
         setScanResult({
           success: true,
-          message: '✓ Attendance Marked',
+          message: '✓ Attendance Updated',
           participant: participant
         });
         playSound(true);
         loadData();
-        
-        // Keep popup visible for 2 seconds
-        setTimeout(() => {
-          setScanResult(null);
-        }, 2000);
+        // Popup stays visible until user manually closes it or scans another
       } else {
         setScanResult({
           success: false,
@@ -186,11 +182,7 @@ function ScanAttendance() {
           participant: participant
         });
         playSound(false);
-        
-        // Keep popup visible for 2 seconds
-        setTimeout(() => {
-          setScanResult(null);
-        }, 2000);
+        // Popup stays visible until user manually closes it or scans another
       }
     } catch (err) {
       setScanResult({
@@ -229,13 +221,15 @@ function ScanAttendance() {
     }
   };
 
-  const clearResult = () => {
+  const closePopup = async () => {
     setScanResult(null);
+    // Automatically restart scanner for continuous one-at-a-time scanning
+    await startScanning();
   };
 
   const scanAnother = async () => {
     setScanResult(null);
-    // Restart the scanner
+    // Restart the scanner immediately
     await startScanning();
   };
 
@@ -284,34 +278,35 @@ function ScanAttendance() {
             )}
 
         {scanResult && (
-          <div className={`scan-result ${scanResult.success ? 'success' : 'error'}`}>
-            {scanResult.success ? (
-              <CheckCircle size={48} />
-            ) : (
-              <XCircle size={48} />
-            )}
-            <h3>{scanResult.message}</h3>
-            {scanResult.participant && (
-              <div className="participant-details">
-                {Object.entries(scanResult.participant)
-                  .filter(([key]) => !['id', 'createdAt'].includes(key))
-                  .map(([key, value]) => (
-                    <div className="detail-row" key={key}>
-                      <span className="label">{key}:</span>
-                      <span className="value">{value}</span>
-                    </div>
-                  ))}
+          <div className={`scan-result-popup ${scanResult.success ? 'success' : 'error'}`}>
+            <button className="popup-close-btn" onClick={closePopup} title="Close">
+              <XCircle size={24} />
+            </button>
+            <div className="popup-content">
+              {scanResult.success ? (
+                <CheckCircle size={64} className="popup-icon" />
+              ) : (
+                <XCircle size={64} className="popup-icon" />
+              )}
+              <h3 className="popup-message">{scanResult.message}</h3>
+              {scanResult.participant && (
+                <div className="participant-details">
+                  {Object.entries(scanResult.participant)
+                    .filter(([key]) => !['id', 'createdAt'].includes(key))
+                    .map(([key, value]) => (
+                      <div className="detail-row" key={key}>
+                        <span className="label">{key}:</span>
+                        <span className="value">{value}</span>
+                      </div>
+                    ))}
+                </div>
+              )}
+              <div className="popup-actions">
+                <button className="btn-scan-another" onClick={scanAnother}>
+                  <ScanLine size={20} />
+                  Scan Another
+                </button>
               </div>
-            )}
-            <div className="scan-result-actions">
-              <button className="btn-secondary" onClick={goBack}>
-                <Home size={18} />
-                Go Back
-              </button>
-              <button className="btn-primary" onClick={scanAnother}>
-                <ScanLine size={18} />
-                Scan Another
-              </button>
             </div>
           </div>
         )}
