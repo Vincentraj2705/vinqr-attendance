@@ -15,6 +15,7 @@ function ScanAttendance() {
   const scannerRef = useRef(null);
   const html5QrCodeRef = useRef(null);
   const participantsEndRef = useRef(null);
+  const isProcessingRef = useRef(false);
 
   useEffect(() => {
     loadData();
@@ -131,6 +132,13 @@ function ScanAttendance() {
   };
 
   const onScanSuccess = (decodedText) => {
+    // Prevent multiple simultaneous scans
+    if (isProcessingRef.current) {
+      return; // Ignore scan if already processing
+    }
+    
+    isProcessingRef.current = true;
+    
     // Stop scanning immediately after successful scan
     stopScanning();
     
@@ -223,12 +231,14 @@ function ScanAttendance() {
 
   const closePopup = async () => {
     setScanResult(null);
+    isProcessingRef.current = false; // Reset processing flag
     // Automatically restart scanner for continuous one-at-a-time scanning
     await startScanning();
   };
 
   const scanAnother = async () => {
     setScanResult(null);
+    isProcessingRef.current = false; // Reset processing flag
     // Restart the scanner immediately
     await startScanning();
   };
