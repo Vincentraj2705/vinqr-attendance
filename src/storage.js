@@ -102,6 +102,21 @@ export const markAttendance = (participantId) => {
   return { success: true, record };
 };
 
+// Unmark attendance
+export const unmarkAttendance = (participantId) => {
+  const attendance = getAttendance();
+  const initialLength = attendance.length;
+  const updatedAttendance = attendance.filter(a => a.participantId !== participantId);
+
+  if (updatedAttendance.length < initialLength) {
+    localStorage.setItem(STORAGE_KEYS.ATTENDANCE, JSON.stringify(updatedAttendance));
+    window.dispatchEvent(new Event('dataChanged'));
+    return { success: true, message: 'Attendance unmarked.' };
+  }
+
+  return { success: false, message: 'Participant was not marked.' };
+};
+
 // Clear attendance (for new event)
 export const clearAttendance = () => {
   localStorage.setItem(STORAGE_KEYS.ATTENDANCE, JSON.stringify([]));
