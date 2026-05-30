@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Html5Qrcode } from 'html5-qrcode';
 import { Camera, CheckCircle, XCircle, AlertCircle, Home, ScanLine, UserPlus, Search } from 'lucide-react';
-import { getParticipants, markAttendance, getAttendance } from '../storage';
+import { getParticipants, markAttendance, getAttendance, unmarkAttendance } from '../storage';
 import './ScanAttendance.css';
 
 function ScanAttendance() {
@@ -42,12 +42,13 @@ function ScanAttendance() {
   };
 
   const handleManualMark = (participant) => {
-    const result = markAttendance(participant.id);
+    const present = isPresent(participant.id);
+    const result = present ? unmarkAttendance(participant.id) : markAttendance(participant.id);
     
     if (result.success) {
       setScanResult({
         success: true,
-        message: '✓ Attendance Marked',
+        message: present ? '✓ Attendance Unmarked' : '✓ Attendance Marked',
         participant: participant
       });
       playSound(true);
@@ -405,7 +406,6 @@ function ScanAttendance() {
                       <button
                         className={`btn-mark ${present ? 'marked' : ''}`}
                         onClick={() => handleManualMark(participant)}
-                        disabled={present}
                       >
                         {present ? (
                           <>
