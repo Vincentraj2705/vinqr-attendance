@@ -463,15 +463,6 @@ function ManageParticipants() {
             </div>
             <form onSubmit={handleSubmit} className="participant-form">
               <div className="form-group">
-                <label>Team ID</label>
-                <input
-                  type="text"
-                  value={formData.teamId}
-                  onChange={(e) => setFormData({ ...formData, teamId: e.target.value })}
-                  placeholder="e.g., T001"
-                />
-              </div>
-              <div className="form-group">
                 <label>Name</label>
                 <input
                   type="text"
